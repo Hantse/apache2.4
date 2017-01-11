@@ -2,18 +2,25 @@ FROM debian:jessie
 
 
 RUN apt-get update 
+RUN apt-get install sudo
 	
-RUN echo "deb http://www.d7031.de/debian jessie-experimental main" >> /etc/apt/sources.list
+RUN sudo su -c 'echo "deb http://http.debian.net/debian testing main" > /etc/apt/sources.list.d/testing.list' && sudo apt-get update  
+RUN sudo bash -c 'cat >/etc/apt/preferences.d/testing' <<EOF  
+RUN apt-cache policy apache2  
 
 
-RUN apt-get update \
-	&& apt-get install -y --force-yes apache2
+
+RUN sudo apt-get install -y --force-yes -t testing apache2  
+
+COPY ./http2.conf /etc/apache2/conf-available/http2.conf
 
 RUN a2enmod http2 \
+	&& a2enconf \
 	&& a2enmod headers \
 	&& a2enmod deflate \
 	&& service apache2 restart
 
-VOLUME ["/etc/apache2/www"]
+
+VOLUME ["/etc/apache2/www",  "/etc/apache2/sites-available",  "/etc/apache2/sites-enabled",  "/etc/apache2/conf-available",  "/etc/apache2/conf-enabled"]
 
 EXPOSE 80
