@@ -14,6 +14,6 @@ RUN a2enmod http2 \
 	&& a2enmod deflate \
 	&& service apache2 restart
 
-VOLUME ["/etc/apache2"]
+VOLUME ["/etc/apache2/www"]
 
 EXPOSE 80
