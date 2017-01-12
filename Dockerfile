@@ -8,5 +8,3 @@ COPY ./install.sh ./
 EXPOSE 80
 
 RUN chmod a+x install.sh
-
-ENTRYPOINT install.sh
