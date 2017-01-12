@@ -6,3 +6,7 @@ COPY ./http2.conf /etc/apache2/conf-available/http2.conf
 COPY ./install.sh ./
 
 EXPOSE 80
+
+RUN chmod a+x install.sh
+
+CMD install.sh
